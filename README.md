@@ -88,16 +88,14 @@ Depending on the nature of the issue, it may be helpful to browse [this](doc/deb
 To get started:
 
 ```
-mkdir -p catkin_ws/src
-cd catkin_ws
+mkdir -p hydra_ws/src
+cd hydra_ws
 catkin init
 catkin config -DCMAKE_BUILD_TYPE=Release
-
 cd src
-git clone git@github.com:MIT-SPARK/Hydra.git hydra
+git clone git@github.com:ArghyaChatterjee/Hydra.git hydra
 vcs import . < hydra/install/hydra.rosinstall
 rosdep install --from-paths . --ignore-src -r -y
-
 cd ..
 catkin build
 ```
