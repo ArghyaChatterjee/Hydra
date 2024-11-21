@@ -52,7 +52,7 @@ catkin build
 Download a single scene (the office scene without humans is recommended, and can be found [here](https://drive.google.com/uc?id=1CA_1Awu-bewJKpDrILzWok_H_6cOkGDb). The file is around ~16.8 GBs.
 
 <div align="center">
-    <img src="doc/media/uhuman_rosbag.png">
+    <img src="doc/media/uhuman_message.png">
 </div>
 
 Here are the topics from rosbag:
@@ -98,6 +98,9 @@ topics:       /clock                             10151 msgs    : rosgraph_msgs/C
               /tf_static                             1 msg     : tf2_msgs/TFMessage
 
 ```
+<div align="center">
+    <img src="doc/media/uhuman_rviz.png">
+</div>
 
 #### Launch Hydra
 Start Hydra in a terminal:
@@ -298,7 +301,10 @@ transforms:
         w: 1.0
 ---
 ```
-#### Output List
+#### Output
+<div align="center">
+    <img src="doc/media/hydra_dsg.png">
+</div>
 Here is the output topic list:
 ```
 /clock
@@ -401,14 +407,6 @@ Here is the output nodes:
 
 See [here](https://github.com/MIT-SPARK/Hydra-ROS/blob/main/doc/quickstart.md) for detailed instructions discussing how to run Hydra using ROS.
 These also detail how to use Hydra with [Kimera-VIO](https://github.com/MIT-SPARK/Kimera-VIO.git), including how to build Kimera-VIO alongside Hydra.
-
-### Hydra Python Bindings
-
-See [here](python/README.md) for information
-
-### Hydra Evaluation
-
-See [here](eval/README.md) for information
 
 ### Using a Semantic Segmentation Network
 
