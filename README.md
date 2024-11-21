@@ -8,8 +8,6 @@ This repository contains code to incrementally build 3D Scene Graphs in real-tim
   - ["Hydra: A Real-time Spatial Perception System for 3D Scene Graph Construction and Optimization"](http://www.roboticsproceedings.org/rss18/p050.pdf)
   - ["Foundations of Spatial Perception for Robotics: Hierarchical Representations and Real-time Systems"](https://journals.sagepub.com/doi/10.1177/02783649241229725)
 
-> **Note**<br>
-> ROS related code has been moved to a new repository located [here](https://github.com/MIT-SPARK/Hydra-ROS). This code still do rely on the ROS ecosystem.
 
 ## Installation and Running
 
@@ -54,22 +52,28 @@ Please help us by creating new issues when you run into problems with these inst
 
 ### Quickstart
 
-To test Hydra out, you can just download a single scene (the office scene without humans is recommended, and can be found [here](https://drive.google.com/uc?id=1CA_1Awu-bewJKpDrILzWok_H_6cOkGDb).
-Make sure to decompress the rosbag (`rosbag decompress path/to/bagfile`) before running!
+#### Downloads
+Download a single scene (the office scene without humans is recommended, and can be found [here](https://drive.google.com/uc?id=1CA_1Awu-bewJKpDrILzWok_H_6cOkGDb).
 
-> **:warning: Warning**<br>
-> Also make sure to source the workspace before starting.<br>
-> This is typically `source path/to/catkin_ws/devel/setup.bash`, though if you use zsh you should use the correct setup file for that.
+<div align="center">
+    <img src="doc/media/uhuman_rosbag.png">
+</div>
 
+#### Launch Hydra
 To start Hydra:
 ```
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
 roslaunch hydra_ros uhumans2.launch
 ```
 
 Then, start the rosbag in a separate terminal:
 ```
-rosbag play path/to/rosbag --clock
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
+#### Output
 
 ### Running Hydra
 
