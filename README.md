@@ -302,9 +302,11 @@ transforms:
 ---
 ```
 #### Output
+
 <div align="center">
     <img src="doc/media/hydra_dsg.png">
 </div>
+
 Here is the output topic list:
 ```
 /clock
