@@ -43,9 +43,6 @@ cd ..
 catkin build
 ```
 
-> **Note**<br>
-> Depending on the amount of RAM available on your machine and whether or not you are compiling Kimera-VIO as well, you may run out of memory when compiling with `catkin build` directly (which will result in a `GCC killed` error). If this occurs, you can either specify fewer threads for catkin via `catkin build -j NUM_THREADS` or compile certain larger packages directly first by building them specifically.
-
 ### Quickstart
 
 #### Downloads
@@ -405,20 +402,82 @@ Here is the output nodes:
 /rqt_gui_py_node_24120
 /rviz
 ```
-### Running Hydra
 
-See [here](https://github.com/MIT-SPARK/Hydra-ROS/blob/main/doc/quickstart.md) for detailed instructions discussing how to run Hydra using ROS.
-These also detail how to use Hydra with [Kimera-VIO](https://github.com/MIT-SPARK/Kimera-VIO.git), including how to build Kimera-VIO alongside Hydra.
+### Using Kimera VIO for SLAM
+You can configure your workspace to also include Kimera-VIO by:
+```
+~/hydra_ws/src
+vcs import . < hydra/install/vio_overlay.rosinstall
+cd ..
+catkin init
+catkin config -a --cmake-args -DGTSAM_USE_SYSTEM_EIGEN=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGTSAM_TANGENT_PREINTEGRATION=OFF -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF -DOPENGV_BUILD_WITH_MARCH_NATIVE=OFF
+cd src
+catkin build
+```
+
+#### Running Using VIO Only
+
+First, start Kimera:
+
+```
+roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 use_lcd:=false
+```
+
+and in a separate terminal, run:
+
+```
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
+```
+When you set use_gt_frame:=false:
+
+The robot frame is switched to `base_link_kimera`.
+The odometry frame becomes `odom`.
+The sensor frame becomes `left_cam_kimera`.
+The `fake_world_tf` static transform publisher is skipped.
+Semantic configurations and includes behave according to their respective conditions, primarily depending on `use_gt_semantics` and other arguments.
+
+#### Running Using VIO and External Visual Loop Closures
+
+First, start Kimera:
+
+```
+roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 \
+    use_lcd:=true \
+    lcd_no_optimize:=true
+```
+
+and in a separate terminal, run the same command for Hydra:
+
+```
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
+```
+
+:warning: To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
+
+#### Running Using VIO and DSG Loop Closures
+
+First, start Kimera:
+
+```
+roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 \
+     use_lcd:=true \
+     lcd_no_detection:=true
+```
+
+and in a separate terminal, run the same command for Hydra:
+
+```
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false enable_dsg_lcd:=true
+```
+
+:warning: To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
 
 ### Using a Semantic Segmentation Network
-
-> **Note**<br>
-> This package is not public (yet)
 
 Add `semantic_recolor` to your workspace via:
 
 ```
-roscd && cd ../src
+~/hydra_ws/src/ 
 vcs import . < hydra/install/semantic_overlay.rosinstall
 ```
 
@@ -428,4 +487,28 @@ Finally, build your workspace:
 
 ```
 catkin build
+```
+### Running all the modules
+
+First, start Kimera:
+
+```
+roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 use_lcd:=false
+```
+2nd, start the segmentation network:
+```
+roslaunch semantic_inference_ros semantic_inference.launch
+```
+The image topic it's expecting is `semantic_inference/color/image_raw`. You can republish it as:
+```
+rosbag play path/to/rosbag /some/color/image/topic:=/semantic_inference/color/image_raw
+```
+and in a separate terminal, run:
+
+```
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
+```
+And finally, run the rosbag:
+```
+rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
