@@ -314,7 +314,7 @@ twist:
       z: -0.24633322600066307
   covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ```
-Echo rosbag `odometry` topic publishing rate:
+Echo rosbag `/tesse/odom` topic publishing rate:
 ```
 $ rostopic hz /tesse/odom
 average rate: 198.805
@@ -600,7 +600,7 @@ transforms:
         w: 0.6186845774956556
 ---
 ```
-Echo `odometry` topic:
+Echo `/kimera_vio_ros/odometry` topic:
 ```
 $ rostopic echo /kimera_vio_ros/odometry
 header: 
