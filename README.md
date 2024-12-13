@@ -95,6 +95,12 @@ topics:       /clock                             10151 msgs    : rosgraph_msgs/C
               /tf_static                             1 msg     : tf2_msgs/TFMessage
 
 ```
+The rosbag is `bz2` compressed and has a size of `16.8 GB`. After decompression, the rosbag will have a size of `43.4 GB`. So you need to have a total size of `60.2 GB` left in your pc for the whole operation. Decompress the rosbag in the following way:
+```
+$ rosbag decompress uHumans2_office_s1_00h.bag
+```
+If you don't decompress the rosbag before playing it, it will require additional CPU cycles to decompress the data while reading it. The decompression can be CPU-intensive, especially with BZ2, which is known for high compression ratios but slower decompression speeds.
+
 <div align="center">
     <img src="doc/media/uhuman_rviz.png">
 </div>
@@ -107,10 +113,9 @@ source devel/setup.bash
 roslaunch hydra_ros uhumans2.launch
 ```
 
-Start the rosbag in a separate terminal:
+Start the decompressed rosbag in a separate terminal:
 ```
 source /opt/ros/noetic/setup.bash
-source devel/setup.bash
 rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
 Topics to subscribe from rosbag:
@@ -131,9 +136,10 @@ Topics Publishing rate from rosbag:
 /tesse/left_cam/rgb/image_raw   : 17 Hz
 /tesse/seg_cam/rgb/image_raw    : 17 Hz
 ```
-Echo Topics:
+
+Echo `/tf` topic:
 ```
-$rostopic echo /tf
+$ rostopic echo /tf
 transforms: 
   - 
     header: 
@@ -154,9 +160,9 @@ transforms:
         z: 0.7974413381818911
         w: 0.6033024920354114
 ```
-Echo /tf_static topic:
+Echo `/tf_static` topic:
 ```
-arghya@arghya-Pulse-GL66-12UEK:~$ rostopic echo /tf_static
+$ rostopic echo /tf_static
 transforms: 
   - 
     header: 
@@ -170,46 +176,6 @@ transforms:
       translation: 
         x: 0.0
         y: -0.05
-        z: 0.0
-      rotation: 
-        x: 0.5
-        y: -0.5
-        z: 0.5
-        w: -0.5
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "left_cam"
-    transform: 
-      translation: 
-        x: 0.0
-        y: 0.05
-        z: 0.0
-      rotation: 
-        x: 0.5
-        y: -0.5
-        z: 0.5
-        w: -0.5
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "left_cam"
-    transform: 
-      translation: 
-        x: 0.0
-        y: 0.05
         z: 0.0
       rotation: 
         x: 0.5
@@ -298,6 +264,63 @@ transforms:
         w: 1.0
 ---
 ```
+Echo `/tesse/left_cam/rgb/image_raw` topic:
+```
+$ rostopic echo /tesse/left_cam/rgb/image_raw
+header: 
+  seq: 690
+  stamp: 
+    secs: 49
+    nsecs: 354880000
+  frame_id: "left_cam"
+height: 480
+width: 720
+encoding: "rgb8"
+is_bigendian: 0
+step: 2160
+data: [85, 82, 70, 86,..]
+```
+Echo `/tesse/odom` topic:
+```
+$ rostopic echo /tesse/odom
+header: 
+  seq: 6890
+  stamp: 
+    secs: 45
+    nsecs: 935000000
+  frame_id: "world"
+child_frame_id: "base_link_gt"
+pose: 
+  pose: 
+    position: 
+      x: -11.12916
+      y: 29.52079
+      z: 2.503268
+    orientation: 
+      x: 0.008076327672434516
+      y: 0.006944061974759178
+      z: 0.7582192290403202
+      w: 0.6519126886693651
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+twist: 
+  twist: 
+    linear: 
+      x: 0.384065
+      y: 0.3005236
+      z: -0.005581255
+    angular: 
+      x: -2.1049100314385386e-06
+      y: 1.1537125586406692e-07
+      z: -0.24633322600066307
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+```
+Echo rosbag `odometry` topic publishing rate:
+```
+$ rostopic hz /tesse/odom
+average rate: 198.805
+	min: 0.000s max: 0.015s std dev: 0.00487s window: 200
+```
+
 #### Output
 
 <div align="center">
@@ -420,21 +443,204 @@ catkin build
 First, start Kimera:
 
 ```
+source /opt/ros/noetic/setup.bash
+cd ~/hydra_ws
+source devel/setup.bash
 roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 use_lcd:=false
 ```
 
 and in a separate terminal, run:
 
 ```
+source /opt/ros/noetic/setup.bash
+cd ~/hydra_ws
+source devel/setup.bash
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
 ```
 When you set use_gt_frame:=false:
-
-The robot frame is switched to `base_link_kimera`.
-The odometry frame becomes `odom`.
-The sensor frame becomes `left_cam_kimera`.
-The `fake_world_tf` static transform publisher is skipped.
+```
+- The robot frame is switched to `base_link_kimera`.
+- The odometry frame becomes `odom`.
+- The sensor frame becomes `left_cam_kimera`.
+- The `fake_world_tf` static transform publisher is skipped.
+```
 Semantic configurations and includes behave according to their respective conditions, primarily depending on `use_gt_semantics` and other arguments.
+
+Now, start the decompressed rosbag in a separate terminal:
+```
+source /opt/ros/noetic/setup.bash
+rosbag play ~/uHumans2_office_s1_00h.bag --clock
+```
+List of rostopics:
+```
+$ rostopic list
+/clicked_point
+/clock
+/hydra_dsg_visualizer/dsg_markers
+/hydra_dsg_visualizer/dsg_mesh
+/hydra_dsg_visualizer/dynamic_layers_viz
+/hydra_dsg_visualizer/gt_regions
+/hydra_ros_node/backend/deformation_graph_mesh_mesh
+/hydra_ros_node/backend/deformation_graph_pose_mesh
+/hydra_ros_node/backend/dsg
+/hydra_ros_node/backend/pose_graph
+/hydra_ros_node/frontend/dsg
+/hydra_ros_node/frontend/full_mesh_update
+/hydra_ros_node/frontend/mesh_graph_incremental
+/hydra_ros_node/gvd/occupancy
+/hydra_ros_node/objects/active_vertices
+/hydra_ros_node/places/graph_visualizer/parameter_descriptions
+/hydra_ros_node/places/graph_visualizer/parameter_updates
+/hydra_ros_node/places/gvd_visualizer/parameter_descriptions
+/hydra_ros_node/places/gvd_visualizer/parameter_updates
+/hydra_ros_node/places/visualizer_colormap/parameter_descriptions
+/hydra_ros_node/places/visualizer_colormap/parameter_updates
+/hydra_ros_node/tsdf/occupancy
+/initialpose
+/kimera_distributed/optimized_nodes
+/kimera_vio_ros/bow_query
+/kimera_vio_ros/frontend_stats
+/kimera_vio_ros/imu_bias
+/kimera_vio_ros/interactive_node/feedback
+/kimera_vio_ros/interactive_node/update
+/kimera_vio_ros/interactive_node/update_full
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed/parameter_descriptions
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed/parameter_updates
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth/parameter_descriptions
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth/parameter_updates
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora/parameter_descriptions
+/kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora/parameter_updates
+/kimera_vio_ros/mesh
+/kimera_vio_ros/odometry
+/kimera_vio_ros/optimized_odometry
+/kimera_vio_ros/optimized_trajectory
+/kimera_vio_ros/pose_graph
+/kimera_vio_ros/pose_graph_incremental
+/kimera_vio_ros/posegraph_viewer/graph_nodes
+/kimera_vio_ros/posegraph_viewer/graph_nodes_ids
+/kimera_vio_ros/posegraph_viewer/loop_edges
+/kimera_vio_ros/posegraph_viewer/odometry_edges
+/kimera_vio_ros/posegraph_viewer/rejected_loop_edges
+/kimera_vio_ros/reinit_flag
+/kimera_vio_ros/reinit_pose
+/kimera_vio_ros/resiliency
+/kimera_vio_ros/time_horizon_pointcloud
+/kimera_vio_ros/vlc_frames
+/move_base_simple/goal
+/rosout
+/rosout_agg
+/tesse/depth_cam/camera_info
+/tesse/depth_cam/mono/image_raw
+/tesse/depth_cam/mono/image_raw/mouse_click
+/tesse/front_lidar/scan
+/tesse/imu/clean/imu
+/tesse/imu/noisy/biases/accel
+/tesse/imu/noisy/biases/gyro
+/tesse/imu/noisy/imu
+/tesse/left_cam/camera_info
+/tesse/left_cam/mono/image_raw
+/tesse/left_cam/rgb/image_raw
+/tesse/left_cam/rgb/image_raw/mouse_click
+/tesse/odom
+/tesse/rear_lidar/scan
+/tesse/right_cam/camera_info
+/tesse/right_cam/mono/image_raw
+/tesse/right_cam/rgb/image_raw
+/tesse/seg_cam/camera_info
+/tesse/seg_cam/rgb/image_raw
+/tesse/seg_cam/rgb/image_raw/mouse_click
+/tf
+/tf_static
+```
+Echo `/tf` topic:
+```
+$ rostopic echo /tf
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 431
+        nsecs: 254900000
+      frame_id: "world"
+    child_frame_id: "base_link_kimera"
+    transform: 
+      translation: 
+        x: 19.604710856789612
+        y: 25.92507683583814
+        z: 2.748140179070399
+      rotation: 
+        x: 0.009504226737755991
+        y: 0.006379345902372752
+        z: 0.789339974395349
+        w: 0.6138496383023587
+---
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 431
+        nsecs: 310000000
+      frame_id: "world"
+    child_frame_id: "base_link_gt"
+    transform: 
+      translation: 
+        x: 19.51595
+        y: 25.56333
+        z: 2.496982
+      rotation: 
+        x: 0.00836634196535517
+        y: 0.006589348641827742
+        z: 0.7855672971653143
+        w: 0.6186845774956556
+---
+```
+Echo `odometry` topic:
+```
+$ rostopic echo /kimera_vio_ros/odometry
+header: 
+  seq: 2
+  stamp: 
+    secs: 120
+    nsecs: 754900000
+  frame_id: "world"
+child_frame_id: "base_link_kimera"
+pose: 
+  pose: 
+    position: 
+      x: 1.1551319306117498
+      y: 18.06044637912025
+      z: 2.5716418522385394
+    orientation: 
+      x: -0.0069460783801739414
+      y: 0.007613975510373809
+      z: -0.7109593274023065
+      w: 0.7031576026409547
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+twist: 
+  twist: 
+    linear: 
+      x: 0.7145587062645125
+      y: 0.03567164206040431
+      z: 0.0041914637215003546
+    angular: 
+      x: 0.0
+      y: 0.0
+      z: 0.0
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+---
+```
+Echo kimera `odometry` topic publishing rate:
+```
+$ rostopic hz /kimera_vio_ros/odometry
+average rate: 4.075
+	min: 0.202s max: 0.283s std dev: 0.02989s window: 5
+```
 
 #### Running Using VIO and External Visual Loop Closures
 
@@ -452,7 +658,7 @@ and in a separate terminal, run the same command for Hydra:
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
 ```
 
-:warning: To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
+To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
 
 #### Running Using VIO and DSG Loop Closures
 
@@ -470,7 +676,7 @@ and in a separate terminal, run the same command for Hydra:
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false enable_dsg_lcd:=true
 ```
 
-:warning: To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
+To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
 
 ### Using a Semantic Segmentation Network
 
