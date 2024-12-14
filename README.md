@@ -136,6 +136,16 @@ Topics Publishing rate from rosbag:
 /tesse/left_cam/rgb/image_raw   : 17 Hz
 /tesse/seg_cam/rgb/image_raw    : 17 Hz
 ```
+Tf tree from rosbag:
+```
+map
+ └── world
+      └── base_link_gt
+           ├── front_lidar
+           ├── left_cam
+           ├── rear_lidar
+           └── right_cam
+```
 
 Echo `/tf` topic:
 ```
@@ -448,8 +458,9 @@ cd ~/hydra_ws
 source devel/setup.bash
 roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 use_lcd:=false
 ```
+Kimera VIO starts to publish the odometry in `/kimera_vio_ros/odometry` topic and the frame transforms are published in `world` to `base_link_kimera` frame.
 
-and in a separate terminal, run:
+In a separate terminal, run hydra:
 
 ```
 source /opt/ros/noetic/setup.bash
@@ -457,21 +468,34 @@ cd ~/hydra_ws
 source devel/setup.bash
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
 ```
-When you set use_gt_frame:=false:
+When you set `use_gt_frame:=false`:
 ```
 - The robot frame is switched to `base_link_kimera`.
-- The odometry frame becomes `odom`.
+- The odometry frame remains `world`.
 - The sensor frame becomes `left_cam_kimera`.
-- The `fake_world_tf` static transform publisher is skipped.
+- The `fake_world_tf` static transform publisher pubslishes transform as it is from `map` to `world` frame.
+- Semantic configurations and includes remain the same depending on `use_gt_semantics` and other arguments.
 ```
-Semantic configurations and includes behave according to their respective conditions, primarily depending on `use_gt_semantics` and other arguments.
-
 Now, start the decompressed rosbag in a separate terminal:
 ```
 source /opt/ros/noetic/setup.bash
 rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
-List of rostopics:
+Tf tree from rosbag and kimera vio:
+```
+map
+ └── world
+      ├── base_link_gt
+      │    ├── front_lidar
+      │    ├── left_cam
+      │    ├── rear_lidar
+      │    └── right_cam
+      └── base_link_kimera
+           ├── left_cam_kimera
+           └── right_cam_kimera
+
+```
+List of ros topics:
 ```
 $ rostopic list
 /clicked_point
@@ -635,7 +659,7 @@ twist:
   covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ---
 ```
-Echo kimera `odometry` topic publishing rate:
+Echo kimera `/kimera_vio_ros/odometry` topic publishing rate:
 ```
 $ rostopic hz /kimera_vio_ros/odometry
 average rate: 4.075
