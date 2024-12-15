@@ -9,7 +9,7 @@ This repository contains code to incrementally build 3D Scene Graphs in real-tim
   - ["Foundations of Spatial Perception for Robotics: Hierarchical Representations and Real-time Systems"](https://journals.sagepub.com/doi/10.1177/02783649241229725)
 
 
-## Installation and Running
+## Installation 
 
 ### General Requirements
 
@@ -43,9 +43,9 @@ cd ..
 catkin build
 ```
 
-### Quickstart
+## Hydra with default VIO & Segmentation Network
 
-#### Downloads
+### Downloads
 Download a single scene (the office scene without humans is recommended, and can be found [here](https://drive.google.com/uc?id=1CA_1Awu-bewJKpDrILzWok_H_6cOkGDb). The file is around ~16.8 GBs.
 
 <div align="center">
@@ -105,7 +105,7 @@ If you don't decompress the rosbag before playing it, it will require additional
     <img src="doc/media/uhuman_rviz.png">
 </div>
 
-#### Launch Hydra
+### Launch Hydra
 Start Hydra in a terminal:
 ```
 source /opt/ros/noetic/setup.bash
@@ -331,7 +331,7 @@ average rate: 198.805
 	min: 0.000s max: 0.015s std dev: 0.00487s window: 200
 ```
 
-#### Output
+###s Output
 
 <div align="center">
     <img src="doc/media/hydra_dsg.png">
@@ -436,7 +436,7 @@ Here is the output nodes:
 /rviz
 ```
 
-### Using Kimera VIO for SLAM
+## Hydra with Kimera VIO & default Segmentation Network
 You can configure your workspace to also include Kimera-VIO by:
 ```
 ~/hydra_ws/src
@@ -448,7 +448,7 @@ cd src
 catkin build
 ```
 
-#### Running Using VIO Only
+### Using Kimera VIO Only
 
 First, start Kimera:
 
@@ -580,6 +580,67 @@ $ rostopic list
 /tf
 /tf_static
 ```
+There are 2 nodes that start with the launch of Kimera VIO module. They are:
+```
+/kimera_vio_ros/kimera_vio_ros_node
+/kimera_vio_ros/posegraph_viewer
+```
+Kimera `/kimera_vio_ros/posegraph_viewer` node subscribed topics:
+```
+ * /clock [rosgraph_msgs/Clock]
+ * /kimera_vio_ros/interactive_node/feedback [unknown type]
+ * /kimera_vio_ros/pose_graph [pose_graph_tools_msgs/PoseGraph]
+```
+Kimera `/kimera_vio_ros/posegraph_viewer` node published topics:
+```
+ * /kimera_vio_ros/interactive_node/update [visualization_msgs/InteractiveMarkerUpdate]
+ * /kimera_vio_ros/interactive_node/update_full [visualization_msgs/InteractiveMarkerInit]
+ * /kimera_vio_ros/posegraph_viewer/graph_nodes [visualization_msgs/Marker]
+ * /kimera_vio_ros/posegraph_viewer/graph_nodes_ids [visualization_msgs/Marker]
+ * /kimera_vio_ros/posegraph_viewer/loop_edges [visualization_msgs/Marker]
+ * /kimera_vio_ros/posegraph_viewer/odometry_edges [visualization_msgs/Marker]
+ * /kimera_vio_ros/posegraph_viewer/rejected_loop_edges [visualization_msgs/Marker]
+ * /rosout [rosgraph_msgs/Log]
+```
+Kimera `/kimera_vio_ros/kimera_vio_ros_node` node subscribed topics:
+```
+ * /clock [rosgraph_msgs/Clock]
+ * /kimera_vio_ros/reinit_flag [unknown type]
+ * /kimera_vio_ros/reinit_pose [unknown type]
+ * /tesse/imu/clean/imu [sensor_msgs/Imu]
+ * /tesse/left_cam/mono/image_raw [sensor_msgs/Image]
+ * /tesse/odom [nav_msgs/Odometry]
+ * /tesse/right_cam/mono/image_raw [sensor_msgs/Image]
+```
+Kimera `/kimera_vio_ros/kimera_vio_ros_node` node published topics:
+```
+ * /kimera_vio_ros/bow_query [pose_graph_tools_msgs/BowQueries]
+ * /kimera_vio_ros/frontend_stats [std_msgs/Float64MultiArray]
+ * /kimera_vio_ros/imu_bias [std_msgs/Float64MultiArray]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks [sensor_msgs/Image]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed [sensor_msgs/CompressedImage]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressed/parameter_updates [dynamic_reconfigure/Config]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth [sensor_msgs/CompressedImage]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/compressedDepth/parameter_updates [dynamic_reconfigure/Config]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora [theora_image_transport/Packet]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /kimera_vio_ros/kimera_vio_ros_node/feature_tracks/theora/parameter_updates [dynamic_reconfigure/Config]
+ * /kimera_vio_ros/mesh [pcl_msgs/PolygonMesh]
+ * /kimera_vio_ros/odometry [nav_msgs/Odometry]
+ * /kimera_vio_ros/optimized_odometry [nav_msgs/Odometry]
+ * /kimera_vio_ros/optimized_trajectory [nav_msgs/Path]
+ * /kimera_vio_ros/pose_graph [pose_graph_tools_msgs/PoseGraph]
+ * /kimera_vio_ros/pose_graph_incremental [pose_graph_tools_msgs/PoseGraph]
+ * /kimera_vio_ros/resiliency [std_msgs/Float64MultiArray]
+ * /kimera_vio_ros/time_horizon_pointcloud [sensor_msgs/PointCloud2]
+ * /kimera_vio_ros/vlc_frames [pose_graph_tools_msgs/VLCFrames]
+ * /rosout [rosgraph_msgs/Log]
+ * /tf [tf2_msgs/TFMessage]
+ * /tf_static [tf2_msgs/TFMessage]
+
+```
 Echo `/tf` topic:
 ```
 $ rostopic echo /tf
@@ -666,7 +727,7 @@ average rate: 4.075
 	min: 0.202s max: 0.283s std dev: 0.02989s window: 5
 ```
 
-#### Running Using VIO and External Visual Loop Closures
+### Using Kimera VIO and External Visual Loop Closures
 
 First, start Kimera:
 
@@ -684,7 +745,7 @@ roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
 
 To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
 
-#### Running Using VIO and DSG Loop Closures
+### Using Kimera VIO and Dynamic Scene Graph Loop Closures
 
 First, start Kimera:
 
@@ -702,7 +763,7 @@ roslaunch hydra_ros uhumans2.launch use_gt_frame:=false enable_dsg_lcd:=true
 
 To achieve the best results with Kimera-VIO, you should wait for the LCD vocabulary to finish loading before starting the rosbag.
 
-### Using a Semantic Segmentation Network
+## Hydra with default VIO and Custom Semantic Segmentation Network
 
 Add `semantic_recolor` to your workspace via:
 
@@ -718,7 +779,7 @@ Finally, build your workspace:
 ```
 catkin build
 ```
-### Running all the modules
+## Hydra with Kimera VIO and Custom Semantic Segmentation Network
 
 First, start Kimera:
 
@@ -733,7 +794,7 @@ The image topic it's expecting is `semantic_inference/color/image_raw`. You can 
 ```
 rosbag play path/to/rosbag /some/color/image/topic:=/semantic_inference/color/image_raw
 ```
-and in a separate terminal, run:
+and in a separate terminal, start hydra:
 
 ```
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
