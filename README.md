@@ -118,7 +118,32 @@ Start the decompressed rosbag in a separate terminal:
 source /opt/ros/noetic/setup.bash
 rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
-Topics to subscribe from rosbag:
+Here are the output nodes:
+```
+/bag_static_tf_0
+/bag_static_tf_1
+/bag_static_tf_2
+/bag_static_tf_3
+/bag_static_tf_4
+/bag_static_tf_5
+/fake_world_tf
+/hydra_dsg_visualizer
+/hydra_ros_node
+/play_1732218976941353811
+/rosout
+/rqt_gui_cpp_node_23218
+/rqt_gui_cpp_node_24120
+/rqt_gui_py_node_23218
+/rqt_gui_py_node_24120
+/rviz
+```
+There are 2 nodes that start with the launch of hydra module. They are:
+```
+/hydra_dsg_visualizer
+/hydra_ros_node
+```
+
+Hydra `/hydra_ros_node` node subscribed topics:
 ```
 /clock [rosgraph_msgs/Clock]
 /tesse/depth_cam/mono/image_raw [sensor_msgs/Image]
@@ -127,7 +152,72 @@ Topics to subscribe from rosbag:
 /tf [tf2_msgs/TFMessage]
 /tf_static [tf2_msgs/TFMessage]
 ```
-Topics Publishing rate from rosbag:
+Hydra `/hydra_ros_node` node published topics:
+```
+ * /hydra_ros_node/backend/deformation_graph_mesh_mesh [visualization_msgs/Marker]
+ * /hydra_ros_node/backend/deformation_graph_pose_mesh [visualization_msgs/Marker]
+ * /hydra_ros_node/backend/dsg [hydra_msgs/DsgUpdate]
+ * /hydra_ros_node/backend/pose_graph [pose_graph_tools_msgs/PoseGraph]
+ * /hydra_ros_node/frontend/dsg [hydra_msgs/DsgUpdate]
+ * /hydra_ros_node/frontend/full_mesh_update [kimera_pgmo_msgs/KimeraPgmoMeshDelta]
+ * /hydra_ros_node/frontend/mesh_graph_incremental [pose_graph_tools_msgs/PoseGraph]
+ * /hydra_ros_node/gvd/occupancy [nav_msgs/OccupancyGrid]
+ * /hydra_ros_node/objects/active_vertices [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_10 [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_12 [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_13 [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_18 [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_5 [visualization_msgs/Marker]
+ * /hydra_ros_node/objects/object_vertices_semantic_label_7 [visualization_msgs/Marker]
+ * /hydra_ros_node/places/esdf_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/freespace_graph_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/freespace_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/graph_visualizer/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_ros_node/places/graph_visualizer/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_ros_node/places/graph_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/gvd_cluster_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/gvd_graph_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/gvd_visualizer/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_ros_node/places/gvd_visualizer/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_ros_node/places/gvd_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/surface_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/places/visualizer_colormap/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_ros_node/places/visualizer_colormap/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_ros_node/places/voxel_block_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/reconstruction/tsdf_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/reconstruction/tsdf_weight_viz [visualization_msgs/MarkerArray]
+ * /hydra_ros_node/tsdf/occupancy [nav_msgs/OccupancyGrid]
+ * /rosout [rosgraph_msgs/Log]
+```
+Hydra `/hydra_dsg_visualizer` node subscribed topics:
+```
+ * /clock [rosgraph_msgs/Clock]
+ * /hydra_ros_node/backend/dsg [hydra_msgs/DsgUpdate]
+
+```
+Hydra `/hydra_dsg_visualizer` node published topics:
+```
+ * /hydra_dsg_visualizer/config/dynamic_layer/2/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/dynamic_layer/2/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/layer2/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/layer2/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/layer20/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/layer20/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/layer3/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/layer3/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/layer4/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/layer4/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/layer5/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/layer5/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/config/parameter_descriptions [dynamic_reconfigure/ConfigDescription]
+ * /hydra_dsg_visualizer/config/parameter_updates [dynamic_reconfigure/Config]
+ * /hydra_dsg_visualizer/dsg_markers [visualization_msgs/MarkerArray]
+ * /hydra_dsg_visualizer/dsg_mesh [kimera_pgmo_msgs/KimeraPgmoMesh]
+ * /hydra_dsg_visualizer/dynamic_layers_viz [visualization_msgs/MarkerArray]
+ * /hydra_dsg_visualizer/gt_regions [visualization_msgs/MarkerArray]
+ * /rosout [rosgraph_msgs/Log]
+```
+Topics publishing rate from rosbag:
 ```
 /tf_static                      : Once
 /tf                             : 228 Hz
@@ -331,7 +421,7 @@ average rate: 198.805
 	min: 0.000s max: 0.015s std dev: 0.00487s window: 200
 ```
 
-###s Output
+### Output Dynamic Scene Graph
 
 <div align="center">
     <img src="doc/media/hydra_dsg.png">
@@ -414,26 +504,6 @@ Here is the output topic list:
 /tesse/seg_cam/rgb/image_raw
 /tf
 /tf_static
-```
-
-Here is the output nodes:
-```
-/bag_static_tf_0
-/bag_static_tf_1
-/bag_static_tf_2
-/bag_static_tf_3
-/bag_static_tf_4
-/bag_static_tf_5
-/fake_world_tf
-/hydra_dsg_visualizer
-/hydra_ros_node
-/play_1732218976941353811
-/rosout
-/rqt_gui_cpp_node_23218
-/rqt_gui_cpp_node_24120
-/rqt_gui_py_node_23218
-/rqt_gui_py_node_24120
-/rviz
 ```
 
 ## Hydra with Kimera VIO & default Segmentation Network
@@ -580,6 +650,7 @@ $ rostopic list
 /tf
 /tf_static
 ```
+
 There are 2 nodes that start with the launch of Kimera VIO module. They are:
 ```
 /kimera_vio_ros/kimera_vio_ros_node
@@ -782,7 +853,6 @@ catkin build
 ## Hydra with Kimera VIO and Custom Semantic Segmentation Network
 
 First, start Kimera:
-
 ```
 roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1 use_lcd:=false
 ```
@@ -794,8 +864,7 @@ The image topic it's expecting is `semantic_inference/color/image_raw`. You can 
 ```
 rosbag play path/to/rosbag /some/color/image/topic:=/semantic_inference/color/image_raw
 ```
-and in a separate terminal, start hydra:
-
+In a separate terminal, start hydra:
 ```
 roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
 ```
