@@ -860,15 +860,48 @@ roslaunch kimera_vio_ros kimera_vio_ros_uhumans2.launch online:=true viz_type:=1
 ```
 roslaunch semantic_inference_ros semantic_inference.launch
 ```
-The image topic it's expecting is `semantic_inference/color/image_raw`. You can republish it as:
+The image topic it's expecting/subscribing is `semantic_inference/color/image_raw` and publishing is `/semantic_inference/semantic_color/image_raw`. You can also remap the topic as:
 ```
-rosbag play path/to/rosbag /some/color/image/topic:=/semantic_inference/color/image_raw
+rosbag play ~/uHumans2_office_s1_00h.bag --clock /tesse/left_cam/rgb/image_raw:=/semantic_inference/color/image_raw
 ```
 In a separate terminal, start hydra:
 ```
-roslaunch hydra_ros uhumans2.launch use_gt_frame:=false
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false 
+```
+If you don't want to launch the `semantic_inference.launch` file in a separate terminal, do the following when launchign the `uhumans2.launch` file:
+```
+roslaunch hydra_ros uhumans2.launch use_gt_frame:=false use_gt_semantics:=false
 ```
 And finally, run the rosbag:
 ```
 rosbag play ~/uHumans2_office_s1_00h.bag --clock
 ```
+The following changes will happen when `use_gt_semantics` is set to `false`.
+
+- Label Space and Semantic Map Directory: Label space changes to `ade20k_mp3d` and Semantic map directory changes to `$(find semantic_inference)/config/colors`.
+
+- Semantic Label Topic: The label topic switches to `/semantic_inference/semantic_color/image_raw` from simulator-provided topics like `/tesse/seg_cam/rgb/image_raw`.
+
+- Semantic Inference Node: The semantic inference node is launched (`semantic_inference_ros/semantic_inference.launch`).
+
+- Simulator-Provided Semantics: Simulator-provided semantics are disabled.
+
+The published topics are published real-time at:
+```
+$ rostopic hz /semantic_inference/semantic/image_raw
+average rate: 16.840
+	min: 0.032s max: 0.115s std dev: 0.02384s window: 17
+$ rostopic hz /semantic_inference/semantic_overlay/image_raw
+average rate: 17.852
+	min: 0.038s max: 0.117s std dev: 0.02114s window: 18
+$ rostopic hz /semantic_inference/semantic_color/image_raw
+average rate: 18.962
+	min: 0.034s max: 0.109s std dev: 0.01480s window: 19
+```
+The subscribed topic is published at:
+```
+$ rostopic hz /tesse/left_cam/camera_info
+average rate: 19.017
+	min: 0.041s max: 0.105s std dev: 0.01366s window: 17
+```
+So, they are pretty much real-time. 
