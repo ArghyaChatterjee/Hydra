@@ -905,3 +905,136 @@ average rate: 19.017
 	min: 0.041s max: 0.105s std dev: 0.01366s window: 17
 ```
 So, they are pretty much real-time. 
+
+# Note:
+Here are some of the details about the topics that are being published from the uhumans rosbag.
+
+- Echo `/tesse/left_cam/rgb/image_raw`
+```
+$ rostopic echo -n1 /tesse/left_cam/rgb/image_raw
+header: 
+  seq: 865
+  stamp: 
+    secs: 59
+    nsecs: 404879999
+  frame_id: "left_cam"
+height: 480
+width: 720
+encoding: "rgb8"
+is_bigendian: 0
+step: 2160
+data: [56, 53, 45, 52, ...]
+```
+
+- Echo `/tesse/left_cam/mono/image_raw`
+```
+$ rostopic echo -n1 /tesse/left_cam/mono/image_raw
+header: 
+  seq: 1584
+  stamp: 
+    secs: 101
+    nsecs: 704899999
+  frame_id: "left_cam"
+height: 480
+width: 720
+encoding: "mono8"
+is_bigendian: 0
+step: 720
+data: [51, 52, 51, 51, ...]
+```
+
+- Echo `/tesse/depth_cam/mono/image_raw`
+```
+$ rostopic echo -n1 /tesse/depth_cam/mono/image_raw
+header: 
+  seq: 3046
+  stamp: 
+    secs: 197
+    nsecs: 854899999
+  frame_id: "left_cam"
+height: 480
+width: 720
+encoding: "32FC1"
+is_bigendian: 0
+step: 2880
+data: [34, 18, 30, 64, 7, ...]
+```
+
+- Echo `/tesse/odom`
+```
+$ rostopic echo -n1 /tesse/odom
+header: 
+  seq: 70201
+  stamp: 
+    secs: 362
+    nsecs: 490000000
+  frame_id: "world"
+child_frame_id: "base_link_gt"
+pose: 
+  pose: 
+    position: 
+      x: 21.96915
+      y: 40.73519
+      z: 2.500258
+    orientation: 
+      x: 0.006866087457755151
+      y: 0.00814112167970659
+      z: 0.6446937069625222
+      w: 0.7643667988497015
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+twist: 
+  twist: 
+    linear: 
+      x: 0.6005164
+      y: 0.1821608
+      z: -0.002654613
+    angular: 
+      x: 8.217624567488738e-07
+      y: 6.983974123567022e-08
+      z: -0.23253671815683402
+  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+```
+
+- Echo `/tesse/seg_cam/rgb/image_raw`
+```
+$ rostopic echo -n1 /tesse/seg_cam/rgb/image_raw
+header: 
+  seq: 128
+  stamp: 
+    secs: 17
+    nsecs: 954879999
+  frame_id: "left_cam"
+height: 480
+width: 720
+encoding: "rgb8"
+is_bigendian: 0
+step: 2160
+data: [125, 218, 3, 125, 218, ...]
+```
+
+- Echo `/tesse/imu/clean/imu`
+```
+$ rostopic echo -n1 /tesse/imu/clean/imu
+header: 
+  seq: 36962
+  stamp: 
+    secs: 196
+    nsecs: 294999999
+  frame_id: "base_link_gt"
+orientation: 
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  w: 0.0
+orientation_covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+angular_velocity: 
+  x: 1.8282136960404371e-07
+  y: 2.4693349096180957e-07
+  z: -0.2116600191629781
+angular_velocity_covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+linear_acceleration: 
+  x: 0.24822837598984826
+  y: 0.2962241692971665
+  z: 9.807736364640686
+linear_acceleration_covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+```
