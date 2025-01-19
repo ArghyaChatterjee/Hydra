@@ -28,7 +28,7 @@
     version: master
 - git:
     local-name: kimera_vio
-    uri: git@github.com:MIT-SPARK/Kimera-VIO.git
+    uri: git@github.com:ArghyaChatterjee/Kimera-VIO.git
     version: master
 - git:
     local-name: kimera_vio_ros
