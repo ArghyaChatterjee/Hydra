@@ -237,190 +237,6 @@ map
            └── right_cam
 ```
 
-Echo `/tf` topic:
-```
-$ rostopic echo /tf
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 432
-        nsecs: 154899999
-      frame_id: "world"
-    child_frame_id: "base_link_gt"
-    transform: 
-      translation: 
-        x: 19.73053
-        y: 25.51378
-        z: 2.497293
-      rotation: 
-        x: 0.008492810313284773
-        y: 0.006425529979661489
-        z: 0.7974413381818911
-        w: 0.6033024920354114
-```
-Echo `/tf_static` topic:
-```
-$ rostopic echo /tf_static
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "right_cam"
-    transform: 
-      translation: 
-        x: 0.0
-        y: -0.05
-        z: 0.0
-      rotation: 
-        x: 0.5
-        y: -0.5
-        z: 0.5
-        w: -0.5
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "left_cam"
-    transform: 
-      translation: 
-        x: 0.0
-        y: 0.05
-        z: 0.0
-      rotation: 
-        x: 0.5
-        y: -0.5
-        z: 0.5
-        w: -0.5
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "rear_lidar"
-    transform: 
-      translation: 
-        x: -0.17
-        y: -0.017
-        z: 0.0
-      rotation: 
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "map"
-    child_frame_id: "world"
-    transform: 
-      translation: 
-        x: 0.0
-        y: 0.0
-        z: 0.0
-      rotation: 
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
----
-transforms: 
-  - 
-    header: 
-      seq: 0
-      stamp: 
-        secs: 0
-        nsecs:         0
-      frame_id: "base_link_gt"
-    child_frame_id: "front_lidar"
-    transform: 
-      translation: 
-        x: 0.17
-        y: -0.017
-        z: 0.0
-      rotation: 
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
----
-```
-Echo `/tesse/left_cam/rgb/image_raw` topic:
-```
-$ rostopic echo /tesse/left_cam/rgb/image_raw
-header: 
-  seq: 690
-  stamp: 
-    secs: 49
-    nsecs: 354880000
-  frame_id: "left_cam"
-height: 480
-width: 720
-encoding: "rgb8"
-is_bigendian: 0
-step: 2160
-data: [85, 82, 70, 86,..]
-```
-Echo `/tesse/odom` topic:
-```
-$ rostopic echo /tesse/odom
-header: 
-  seq: 6890
-  stamp: 
-    secs: 45
-    nsecs: 935000000
-  frame_id: "world"
-child_frame_id: "base_link_gt"
-pose: 
-  pose: 
-    position: 
-      x: -11.12916
-      y: 29.52079
-      z: 2.503268
-    orientation: 
-      x: 0.008076327672434516
-      y: 0.006944061974759178
-      z: 0.7582192290403202
-      w: 0.6519126886693651
-  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-twist: 
-  twist: 
-    linear: 
-      x: 0.384065
-      y: 0.3005236
-      z: -0.005581255
-    angular: 
-      x: -2.1049100314385386e-06
-      y: 1.1537125586406692e-07
-      z: -0.24633322600066307
-  covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-```
-Echo rosbag `/tesse/odom` topic publishing rate:
-```
-$ rostopic hz /tesse/odom
-average rate: 198.805
-	min: 0.000s max: 0.015s std dev: 0.00487s window: 200
-```
-
 ### Output Dynamic Scene Graph
 
 <div align="center">
@@ -909,7 +725,7 @@ So, they are pretty much real-time.
 # Note:
 Here are some of the details about the topics that are being published from the uhumans rosbag.
 
-- Echo `/tesse/left_cam/rgb/image_raw`
+- Echo `/tesse/left_cam/rgb/image_raw` topic:
 ```
 $ rostopic echo -n1 /tesse/left_cam/rgb/image_raw
 header: 
@@ -926,7 +742,7 @@ step: 2160
 data: [56, 53, 45, 52, ...]
 ```
 
-- Echo `/tesse/left_cam/mono/image_raw`
+- Echo `/tesse/left_cam/mono/image_raw` topic:
 ```
 $ rostopic echo -n1 /tesse/left_cam/mono/image_raw
 header: 
@@ -943,7 +759,7 @@ step: 720
 data: [51, 52, 51, 51, ...]
 ```
 
-- Echo `/tesse/depth_cam/mono/image_raw`
+- Echo `/tesse/depth_cam/mono/image_raw` topic:
 ```
 $ rostopic echo -n1 /tesse/depth_cam/mono/image_raw
 header: 
@@ -960,7 +776,7 @@ step: 2880
 data: [34, 18, 30, 64, 7, ...]
 ```
 
-- Echo `/tesse/odom`
+- Echo `/tesse/odom` topic: 
 ```
 $ rostopic echo -n1 /tesse/odom
 header: 
@@ -995,7 +811,14 @@ twist:
   covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 ```
 
-- Echo `/tesse/seg_cam/rgb/image_raw`
+- Echo rosbag `/tesse/odom` topic publishing rate:
+```
+$ rostopic hz /tesse/odom
+average rate: 198.805
+	min: 0.000s max: 0.015s std dev: 0.00487s window: 200
+```
+
+- Echo `/tesse/seg_cam/rgb/image_raw` topic:
 ```
 $ rostopic echo -n1 /tesse/seg_cam/rgb/image_raw
 header: 
@@ -1012,7 +835,7 @@ step: 2160
 data: [125, 218, 3, 125, 218, ...]
 ```
 
-- Echo `/tesse/imu/clean/imu`
+- Echo `/tesse/imu/clean/imu` topic:
 ```
 $ rostopic echo -n1 /tesse/imu/clean/imu
 header: 
@@ -1037,4 +860,132 @@ linear_acceleration:
   y: 0.2962241692971665
   z: 9.807736364640686
 linear_acceleration_covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+```
+
+- Echo `/tf_static` topic:
+```
+$ rostopic echo /tf_static
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "base_link_gt"
+    child_frame_id: "right_cam"
+    transform: 
+      translation: 
+        x: 0.0
+        y: -0.05
+        z: 0.0
+      rotation: 
+        x: 0.5
+        y: -0.5
+        z: 0.5
+        w: -0.5
+---
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "base_link_gt"
+    child_frame_id: "left_cam"
+    transform: 
+      translation: 
+        x: 0.0
+        y: 0.05
+        z: 0.0
+      rotation: 
+        x: 0.5
+        y: -0.5
+        z: 0.5
+        w: -0.5
+---
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "base_link_gt"
+    child_frame_id: "rear_lidar"
+    transform: 
+      translation: 
+        x: -0.17
+        y: -0.017
+        z: 0.0
+      rotation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 1.0
+---
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "map"
+    child_frame_id: "world"
+    transform: 
+      translation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      rotation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 1.0
+---
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 0
+        nsecs:         0
+      frame_id: "base_link_gt"
+    child_frame_id: "front_lidar"
+    transform: 
+      translation: 
+        x: 0.17
+        y: -0.017
+        z: 0.0
+      rotation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 1.0
+```
+
+- Echo `/tf` topic:
+```
+$ rostopic echo /tf
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 432
+        nsecs: 154899999
+      frame_id: "world"
+    child_frame_id: "base_link_gt"
+    transform: 
+      translation: 
+        x: 19.73053
+        y: 25.51378
+        z: 2.497293
+      rotation: 
+        x: 0.008492810313284773
+        y: 0.006425529979661489
+        z: 0.7974413381818911
+        w: 0.6033024920354114
 ```
