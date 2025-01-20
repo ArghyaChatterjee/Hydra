@@ -989,3 +989,81 @@ transforms:
         z: 0.7974413381818911
         w: 0.6033024920354114
 ```
+
+- Echo `/tesse/left_cam/camera_info` topic:
+```
+$ rostopic echo -n1 /tesse/left_cam/camera_info
+header: 
+  seq: 1232
+  stamp: 
+    secs: 80
+    nsecs: 404880000
+  frame_id: "left_cam"
+height: 480
+width: 720
+distortion_model: "radial-tangential"
+D: [0.0, 0.0, 0.0, 0.0]
+K: [415.69219381653056, 0.0, 360.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [415.69219381653056, 0.0, 360.0, 0.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False
+```
+
+- Echo `/tesse/right_cam/camera_info` topic:
+```
+$ rostopic echo -n1 /tesse/right_cam/camera_info
+header: 
+  seq: 1986
+  stamp: 
+    secs: 128
+    nsecs: 704900000
+  frame_id: "right_cam"
+height: 480
+width: 720
+distortion_model: "radial-tangential"
+D: [0.0, 0.0, 0.0, 0.0]
+K: [415.69219381653056, 0.0, 360.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [415.69219381653056, 0.0, 360.0, 0.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False
+```
+
+- Echo `/tesse/depth_cam/camera_info` topic:
+```
+$ rostopic echo -n1 /tesse/depth_cam/camera_info
+header: 
+  seq: 2517
+  stamp: 
+    secs: 162
+    nsecs: 804900000
+  frame_id: "left_cam"
+height: 480
+width: 720
+distortion_model: "radial-tangential"
+D: [0.0, 0.0, 0.0, 0.0]
+K: [415.69219381653056, 0.0, 360.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [415.69219381653056, 0.0, 360.0, 0.0, 0.0, 415.69219381653056, 240.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False
+```
